@@ -7,10 +7,9 @@ export class CreateUserDto extends BaseDto{
 
     @IsNotEmpty()
     @IsString()
-    full_name:string;
+    firstname:string;
 
     @IsNotEmpty()
     @IsString()
-    role:string;
-    
+    lastname:string;
 }

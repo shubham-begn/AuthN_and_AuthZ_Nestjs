@@ -11,14 +11,18 @@ export class UserService {
         private readonly userRepository: Repository<User>
     ) {}
 
-    async register(createUserDto:CreateUserDto):Promise<void>{
+    async register(createUserDto: CreateUserDto): Promise<User> {
+        // Create a new user entity
+        const newUser = new User();
+        newUser.full_name = createUserDto.firstname + ' ' + createUserDto.lastname;
+        newUser.email = createUserDto.email;
+        newUser.password = createUserDto.password;
+        newUser.role = createUserDto.role;
 
-        const user=new User();
-        user.full_name=createUserDto.full_name;
-        user.email=createUserDto.email;
-        user.password=createUserDto.password;
-        user.role=createUserDto.role;
-        await this.userRepository.save(user);
+        // Save the user to the database
+        const savedUser = await this.userRepository.save(newUser);
+
+        return savedUser;
     }
 
     async getUser(email:string):Promise<User>{

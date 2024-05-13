@@ -13,4 +13,9 @@ export class BaseDto{
     @MinLength(6)
     @IsNotEmpty()
     password: string;
+
+    @IsString()
+    @IsNotEmpty()
+     role:string;
+    
 }

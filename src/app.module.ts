@@ -24,8 +24,9 @@ import { UserModule } from './user/user.module';
       autoLoadEntities: true,
     }),
   }),
-  AuthModule,
   UserModule,
+  AuthModule,
+ 
 ],
   controllers: [AppController],
   providers: [AppService],

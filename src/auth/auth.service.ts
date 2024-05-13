@@ -19,7 +19,10 @@ export class AuthService {
     return null;
   }
 
-  generateToken(payload:User):string{
-    return this.jwtservice.sign(payload);
-  }
+  generateToken(user: User): string {
+    // Generate JWT token using user data
+    const payload = { username: user.email, sub: user.id };
+    const token = this.jwtservice.sign(payload);
+    return token;
+}
 }
