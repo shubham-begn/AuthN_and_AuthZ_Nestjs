@@ -7,7 +7,6 @@ import { RoleGuard } from 'src/role.guard';
 import { UseGuards } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { Request ,Response} from '@nestjs/common';
-import { CookieOptions } from 'express';
 @Controller('user')
 export class UserController {
     constructor(private userservice:UserService,
@@ -29,7 +28,7 @@ async register(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promis
     @Post('login')
     async login(@Request() req: any, @Res() res: any) { 
         const token = this.authService.generateToken(req.user);
-        res.cookie('token', token, { httpOnly: true }); 
+        res.cookie('token', token, { httpOnly: false }); 
 
         return res.json({
         message:"User Logged in",
@@ -37,10 +36,14 @@ async register(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promis
        });
     }
 
-    @UseGuards(AuthGuard('jwt'),new RoleGuard('user'))
+    @UseGuards(AuthGuard('jwt'))
     @Post('dashboard')
-    dashboard(){
-        return "Dashboard";
+     dashboard(@Request() req: any) {
+        const cookies = req.cookies;
+        console.log(cookies);
+        
+        const user = req.user;
+        return { user };
     }
 
 }
