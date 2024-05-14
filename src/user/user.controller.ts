@@ -1,4 +1,4 @@
-import { Controller, Get ,ValidationPipe,Body, Post,Res} from '@nestjs/common';
+import { Controller, Get ,ValidationPipe,Body, Post, Req,Res} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { BaseDto } from './dto/base.dto';
@@ -6,7 +6,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/role.guard';
 import { UseGuards } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
-import { Request ,Response} from '@nestjs/common';
 @Controller('user')
 export class UserController {
     constructor(private userservice:UserService,
@@ -26,7 +25,7 @@ async register(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promis
 
     @UseGuards(AuthGuard('local'))
     @Post('login')
-    async login(@Request() req: any, @Res() res: any) { 
+    async login(@Req() req: any, @Res() res: any) { 
         const token = this.authService.generateToken(req.user);
         res.cookie('token', token, { httpOnly: false }); 
 
@@ -38,7 +37,7 @@ async register(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promis
 
     @UseGuards(AuthGuard('jwt'))
     @Post('dashboard')
-     dashboard(@Request() req: any) {
+     dashboard(@Req() req: any) {
         const cookies = req.cookies;
         console.log(cookies);
         
@@ -46,4 +45,16 @@ async register(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promis
         return { user };
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @Post('logout')
+    logout(@Req() req,@Res() res){
+
+        const cookies = req.cookies;
+        if(cookies){
+            res.clearCookie('token');
+        }
+        res.json({
+            msg:"logged out successfully"
+        })
+    }
 }
