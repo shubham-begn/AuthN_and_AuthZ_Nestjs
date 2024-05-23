@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
+import { RabbitmqConsumerModule } from './rabbitmq/rabbitmq.module';
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal:true
@@ -27,7 +27,7 @@ import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
   }),
   UserModule,
   AuthModule,
-  RabbitmqModule,
+  RabbitmqConsumerModule,
  
 ],
   controllers: [AppController],

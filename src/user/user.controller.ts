@@ -13,15 +13,25 @@ export class UserController {
     ){}
 
     @Post('register')
-async register(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promise<string> {
+    async register(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promise<string> {
     const validatedData = createUserDto;
-
     const newUser = await this.userservice.register(validatedData);
-
     const token = this.authService.generateToken(newUser);
 
     return token;
-}
+     }
+
+     @Post('google-register')
+      async googleRegister(@Req() req):Promise<string>{
+
+        
+        console.log(req.body);
+        const newUser = await this.userservice.register(req.body);
+        const token = this.authService.generateToken(newUser);
+
+        return token;
+        
+     }
 
     @UseGuards(AuthGuard('local'))
     @Post('login')

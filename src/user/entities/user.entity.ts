@@ -11,10 +11,10 @@ export class User {
     @Column()
     email: string;
 
-    @Column()
+    @Column({default:"google"})
     password: string;
 
-    @Column()
+    @Column({default:"user"})
     role: string;
 
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }) // Set default value for 'created_at'

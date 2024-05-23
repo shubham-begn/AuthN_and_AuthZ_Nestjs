@@ -1,14 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern } from '@nestjs/microservices';
 
 @Injectable()
 export class RabbitmqConsumerService {
   private readonly logger = new Logger(RabbitmqConsumerService.name);
 
-  @MessagePattern('test_pattern')
-  handleTestPattern(message: { data: any }) {
-    const { data } = message;
-    this.logger.log(`Received message: ${JSON.stringify(data)}`);
-    return { response: `Message received: ${JSON.stringify(data)}` };
+  @EventPattern('test_pattern')
+  handleTestPattern(data: any) {
+    this.logger.log(`Received message with pattern 'test_pattern': ${JSON.stringify(data)}`);
   }
 }
